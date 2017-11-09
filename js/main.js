@@ -6,12 +6,17 @@ var GameState = {
 	preload: function(){
 		//loads the game assets before the game starts
 	  this.game.load.image('background', 'assets/images/background.png');
-	  this.game.load.image('cat1', 'assets/images/cat1.png');
-	  this.game.load.image('llama', 'assets/images/llama.png');
 	  this.game.load.image('rightArrow', 'assets/images/right-arrow.png');
 	  this.game.load.image('leftArrow', 'assets/images/left-arrow.png');
+	   // this.game.load.image('cat', 'assets/images/cat1.png');
+	  // this.game.load.image('llama', 'assets/images/llama.png');
+	  //loads spritesheet instead of individual image
+	  this.load.spritesheet('cat','assets/images/cat1.png', 48, 48, 6);
+	  this.load.spritesheet('llama','assets/images/llama.png', 48, 48, 6);
+
 
 	},
+	//runs after assets load
 	create: function(){
 	 //defines scale
 	 this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -26,7 +31,7 @@ var GameState = {
 	 //group for sprites 
 	  var spriteData = [
 	  {key: 'llama', text:'LLAMA'},
-	  {key: 'cat1', text: 'CAT'}
+	  {key: 'cat', text: 'CAT'}
 	  ];
 	  this.sprites = this.game.add.group();
 	// forEach loops through sprites in group
@@ -34,17 +39,21 @@ var GameState = {
 	  var self = this;
 	  var animal;	
 	  spriteData.forEach(function(element){
-	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key);
-	  	animal.customParams= {text: element.text};
+	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key, 0);
+	  	animal.customParams= {text: element.key};
+	  	//anchor point set to the center of sprite
+	  	animal.anchor.setTo(0.5);
+	  	//create animation
+	  	animal.animations.add('animate', [0, 1, 2 ,3 ,4, 5], 3, false);
+
 	  	animal.inputEnabled = true;
 	  	animal.input.pixelPerfectClick = true;
-	  	animal.anchor.setTo(0.5);
 	  	animal.events.onInputDown.add(self.animateSprite, self);
+	  	// console.log(animal);
 	  });
 
 	  this.currentSprite = this.sprites.next();
 	  this.currentSprite.position.set(this.game.world.centerX, 300);
-	
 	  //right arrow
 	  this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'rightArrow');
 	  // this.rightArrow.scale.setTo(2);
@@ -71,6 +80,10 @@ var GameState = {
 	update: function(){
 	},
 	switchSprite: function(sprite, event) {
+		if(this.isMoving) {
+			return false
+		}
+		this.isMoving = true;
 		//function runs on arrow click
 		var newSprite, endX;
 		if(sprite.customParams.direction > 0) {
@@ -83,16 +96,24 @@ var GameState = {
 			endX = -this.currentSprite.width/2;
 		}
 
-		var newSpriteMovement = game.add.tween(newSprite);
+		var newSpriteMovement = this.game.add.tween(newSprite);
 		newSpriteMovement.to({x: this.game.world.centerX}, 1000);
+		newSpriteMovement.onComplete.add(function(){
+			this.isMoving = false;
+		},this)
 		newSpriteMovement.start();
+
+		var currentSpriteMovement = this.game.add.tween(this.currentSprite);
+		currentSpriteMovement.to({x: endX}, 1000);
+		currentSpriteMovement.start();
 
 		this.currentSprite.x = endX;
 		newSprite.x = this.game.world.centerX;
 		this.currentSprite = newSprite; 
 	},
 	animateSprite: function(sprite, event) {
-		console.log('animate sprite');
+		// console.log('animate sprite');
+		sprite.play('animate');
 	}
 };
 
