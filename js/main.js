@@ -43,17 +43,8 @@ var GameState = {
 	  });
 
 	  this.currentSprite = this.sprites.next();
-	  // this.currentSprite = this.sprites.next();
-	  
 	  this.currentSprite.position.set(this.game.world.centerX, 300);
-	  //cat1 sprite
-	  // this.cat1 = this.game.add.sprite(this.game.world.centerX, 300, 'cat1');
-	  // this.cat1.anchor.setTo(0.5);
-	  // this.cat1.scale.setTo(-.5,.5);
-	  //user input on cat sprite 
-	  // this.cat1.inputEnabled = true;
-	  // this.cat1.input.pixelPerfectClick = true;
-	  // this.cat1.events.onInputDown.add(this.animateSprite, this);
+	
 	  //right arrow
 	  this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'rightArrow');
 	  // this.rightArrow.scale.setTo(2);
@@ -81,7 +72,23 @@ var GameState = {
 	update: function(){
 	},
 	switchSprite: function(sprite, event) {
-		console.log('move sprite');
+		//function runs on arrow click
+		var newSprite, endX;
+		//1. get the direction of arrow
+		if(sprite.customParams.direction > 0) {
+			newSprite = this.sprites.next();
+			endX = 640 + this.currentSprite.width/2;
+		} else {
+			newSprite = this.sprites.previous();
+			endX = -this.currentSprite.width/2;
+		}
+		this.currentSprite.x = endX;
+		//2. get next sprite
+		newSprite.x = this.game.world.centerX;
+		this.currentSprite = newSprite; 
+		//3. get final destination of current sprite
+		//4. move current spriate to final destination 
+		//5. set the next sprite as the new current sprite
 	},
 	animateSprite: function(sprite, event) {
 		console.log('animate sprite');
