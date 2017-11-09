@@ -5,13 +5,11 @@ var game = new Phaser.Game(640, 360, Phaser.AUTO);
 var GameState = {
 	preload: function(){
 		//loads the game assets before the game starts
-	  this.load.image('background', 'assets/images/background.png');
-	  this.load.image('cat1', 'assets/images/phaser-cat1.png');
-	  this.load.image('rightArrow', 'assets/images/right-arrow.png');
-	  this.load.image('leftArrow', 'assets/images/left-arrow.png');
-
-
-
+	  this.game.load.image('background', 'assets/images/background.png');
+	  this.game.load.image('cat1', 'assets/images/phaser-cat1.png');
+	  this.game.load.image('llama', 'assets/images/llama.png');
+	  this.game.load.image('rightArrow', 'assets/images/right-arrow.png');
+	  this.game.load.image('leftArrow', 'assets/images/left-arrow.png');
 
 	},
 	create: function(){
@@ -24,14 +22,38 @@ var GameState = {
 	  //bg image
 	  this.background = this.game.add.sprite(0, 0, 'background');
 	  this.background.scale.setTo(.25);
+
+	  //group for sprites 
+	  var spriteData = [
+	  {key: 'llama', text:'LLAMA'},
+	  {key: 'cat1', text: 'CAT'}
+	  ];
+	  this.sprites = this.game.add.group();
+	// forEach loops through sprites in group
+	//self var allows access to this inside scope of loop
+	  var self = this;
+	  var animal;	
+	  spriteData.forEach(function(element){
+	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key);
+	  	animal.customParams= {text: element.text};
+	  	animal.inputEnabled = true;
+	  	animal.input.pixelPerfectClick = true;
+	  	animal.anchor.setTo(0.5);
+	  	animal.events.onInputDown.add(self.animateSprite, self);
+	  });
+
+	  this.currentSprite = this.sprites.next();
+	  // this.currentSprite = this.sprites.next();
+	  
+	  this.currentSprite.position.set(this.game.world.centerX, 300);
 	  //cat1 sprite
-	  this.cat1 = this.game.add.sprite(this.game.world.centerX, 300, 'cat1');
-	  this.cat1.anchor.setTo(0.5);
-	  this.cat1.scale.setTo(-.5,.5);
+	  // this.cat1 = this.game.add.sprite(this.game.world.centerX, 300, 'cat1');
+	  // this.cat1.anchor.setTo(0.5);
+	  // this.cat1.scale.setTo(-.5,.5);
 	  //user input on cat sprite 
-	  this.cat1.inputEnabled = true;
-	  this.cat1.input.pixelPerfectClick = true;
-	  this.cat1.events.onInputDown.add(this.animateSprite, this);
+	  // this.cat1.inputEnabled = true;
+	  // this.cat1.input.pixelPerfectClick = true;
+	  // this.cat1.events.onInputDown.add(this.animateSprite, this);
 	  //right arrow
 	  this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'rightArrow');
 	  // this.rightArrow.scale.setTo(2);
