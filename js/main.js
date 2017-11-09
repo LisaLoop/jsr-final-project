@@ -28,6 +28,10 @@ var GameState = {
 	  this.cat1 = this.game.add.sprite(this.game.world.centerX, 300, 'cat1');
 	  this.cat1.anchor.setTo(0.5);
 	  this.cat1.scale.setTo(-.5,.5);
+	  //user input on cat sprite 
+	  this.cat1.inputEnabled = true;
+	  this.cat1.input.pixelPerfectClick = true;
+	  this.cat1.events.onInputDown.add(this.animateSprite, this);
 	  //right arrow
 	  this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'rightArrow');
 	  // this.rightArrow.scale.setTo(2);
@@ -40,15 +44,25 @@ var GameState = {
 	  // this.leftArrow.scale.x.setTo(-1);
 
 	  //left arrow user input
-	  this.leftArrow.enableUserInput = true; 
+	  this.leftArrow.inputEnabled = true; 
+	  this.leftArrow.input.pixelPerfectClick = true;
+	  this.leftArrow.events.onInputDown.add(this.switchSprite, this);
+
+	  //right arrow user input
+	  this.rightArrow.inputEnabled = true; 
+	  this.rightArrow.input.pixelPerfectClick = true;
+	  this.rightArrow.events.onInputDown.add(this.switchSprite, this);
 
 
 	},
 	//update function is executed multiple times per second
 	update: function(){
-		//rotates the sprite
-		// this.cat1.angle += 0.5;
-
+	},
+	switchSprite: function(sprite, event) {
+		console.log('move sprite');
+	},
+	animateSprite: function(sprite, event) {
+		console.log('animate sprite');
 	}
 };
 
