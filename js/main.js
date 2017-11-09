@@ -6,14 +6,14 @@ var GameState = {
 	preload: function(){
 		//loads the game assets before the game starts
 	  this.game.load.image('background', 'assets/images/background.png');
-	  this.game.load.image('cat1', 'assets/images/phaser-cat1.png');
+	  this.game.load.image('cat1', 'assets/images/cat1.png');
 	  this.game.load.image('llama', 'assets/images/llama.png');
 	  this.game.load.image('rightArrow', 'assets/images/right-arrow.png');
 	  this.game.load.image('leftArrow', 'assets/images/left-arrow.png');
 
 	},
 	create: function(){
-		//defines scale
+	 //defines scale
 	 this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	 this.scale.pageAlignHorizontally = true;
 	 this.scale.pageAlignVertically = true;
@@ -23,7 +23,7 @@ var GameState = {
 	  this.background = this.game.add.sprite(0, 0, 'background');
 	  this.background.scale.setTo(.25);
 
-	  //group for sprites 
+	 //group for sprites 
 	  var spriteData = [
 	  {key: 'llama', text:'LLAMA'},
 	  {key: 'cat1', text: 'CAT'}
@@ -54,7 +54,6 @@ var GameState = {
 	  this.leftArrow = this.game.add.sprite(60, this.game.world.centerY, 'leftArrow');
 	  this.leftArrow.anchor.setTo(0.5);
 	  this.leftArrow.customParams = {direction: -1};
-	  // this.leftArrow.scale.x.setTo(-1);
 
 	  //left arrow user input
 	  this.leftArrow.inputEnabled = true; 
@@ -74,21 +73,23 @@ var GameState = {
 	switchSprite: function(sprite, event) {
 		//function runs on arrow click
 		var newSprite, endX;
-		//1. get the direction of arrow
 		if(sprite.customParams.direction > 0) {
 			newSprite = this.sprites.next();
+			newSprite.x = -newSprite.width/2;
 			endX = 640 + this.currentSprite.width/2;
 		} else {
 			newSprite = this.sprites.previous();
+			newSprite.x = 640 + newSprite.width/2;
 			endX = -this.currentSprite.width/2;
 		}
+
+		var newSpriteMovement = game.add.tween(newSprite);
+		newSpriteMovement.to({x: this.game.world.centerX}, 1000);
+		newSpriteMovement.start();
+
 		this.currentSprite.x = endX;
-		//2. get next sprite
 		newSprite.x = this.game.world.centerX;
 		this.currentSprite = newSprite; 
-		//3. get final destination of current sprite
-		//4. move current spriate to final destination 
-		//5. set the next sprite as the new current sprite
 	},
 	animateSprite: function(sprite, event) {
 		console.log('animate sprite');
