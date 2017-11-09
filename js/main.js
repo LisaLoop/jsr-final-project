@@ -23,8 +23,9 @@ var GameState = {
 	//creates sprites
 	  //bg image
 	  this.background = this.game.add.sprite(0, 0, 'background');
+	  this.background.scale.setTo(.25);
 	  //cat1 sprite
-	  this.cat1 = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'cat1');
+	  this.cat1 = this.game.add.sprite(this.game.world.centerX, 300, 'cat1');
 	  this.cat1.anchor.setTo(0.5);
 	  this.cat1.scale.setTo(-.5,.5);
 	  //right arrow
@@ -37,6 +38,9 @@ var GameState = {
 	  this.leftArrow.anchor.setTo(0.5);
 	  this.leftArrow.customParams = {direction: -1};
 	  // this.leftArrow.scale.x.setTo(-1);
+
+	  //left arrow user input
+	  this.leftArrow.enableUserInput = true; 
 
 
 	},
