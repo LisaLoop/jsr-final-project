@@ -13,7 +13,7 @@ var GameState = {
 	  //loads spritesheet instead of individual image
 	  this.load.spritesheet('cat','assets/images/cat1.png', 48, 48, 6);
 	  this.load.spritesheet('llama','assets/images/llama.png', 48, 48, 6);
-
+	  this.load.spritesheet('cat1','assets/images/cat1.png', 48, 48, 6);
 
 	},
 	//runs after assets load
@@ -24,28 +24,34 @@ var GameState = {
 	 this.scale.pageAlignVertically = true;
 
 	//creates sprites
-	  //bg image
 	  this.background = this.game.add.sprite(0, 0, 'background');
 	  this.background.scale.setTo(.25);
 
-	 //group for sprites 
+
+	 //group for spritesheets 
 	  var spriteData = [
 	  {key: 'llama', text:'LLAMA'},
-	  {key: 'cat', text: 'CAT'}
+	  {key: 'cat', text: 'CAT'},
+	  {key: 'cat1', text: 'CAT1'}
 	  ];
 	  this.sprites = this.game.add.group();
+
 	// forEach loops through sprites in group
 	//self var allows access to this inside scope of loop
 	  var self = this;
 	  var animal;	
 	  spriteData.forEach(function(element){
+	  	//last parameter refers to frame in sprite animation
 	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key, 0);
 	  	animal.customParams= {text: element.key};
 	  	//anchor point set to the center of sprite
 	  	animal.anchor.setTo(0.5);
+	  	animal.scale.setTo(1);
+	  	console.log(animal);
+
+
 	  	//create animation
 	  	animal.animations.add('animate', [0, 1, 2 ,3 ,4, 5], 3, false);
-
 	  	animal.inputEnabled = true;
 	  	animal.input.pixelPerfectClick = true;
 	  	animal.events.onInputDown.add(self.animateSprite, self);
