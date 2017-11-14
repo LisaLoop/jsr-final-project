@@ -11,9 +11,9 @@ var GameState = {
 	   // this.game.load.image('cat', 'assets/images/cat1.png');
 	  // this.game.load.image('llama', 'assets/images/llama.png');
 	  //loads spritesheet instead of individual image
-	  this.load.spritesheet('cat','assets/images/cat1.png', 48, 48, 6);
-	  this.load.spritesheet('llama','assets/images/llama.png', 48, 48, 6);
-	  this.load.spritesheet('bird','assets/images/bird.png', 32, 32, 6);
+	  this.load.spritesheet('Cat','assets/images/cat1.png', 48, 48, 6);
+	  this.load.spritesheet('Llama','assets/images/llama.png', 48, 48, 6);
+	  this.load.spritesheet('Bird','assets/images/bird.png', 32, 32, 6);
 	  //loads audio files 
 	  this.load.audio('catSound', ['assets/audio/cat-meow.mp3', 'assets/audio/cat-meow.ogg']);
 
@@ -34,9 +34,9 @@ var GameState = {
 
 	 //group for spritesheets 
 	  var spriteData = [
-	  {key: 'llama', text:'LLAMA', audio: 'catSound'},
-	  {key: 'cat', text: 'CAT', audio: 'catSound'},
-	  {key: 'bird', text: 'BIRD', audio: 'catSound'}
+	  {key: 'Llama', text:'LLAMA', audio: 'catSound'},
+	  {key: 'Cat', text: 'CAT', audio: 'catSound'},
+	  {key: 'Bird', text: 'BIRD', audio: 'catSound'}
 	  ];
 	  this.sprites = this.game.add.group();
 
@@ -64,6 +64,9 @@ var GameState = {
 	  // places first animal in the middle of screen
 	  this.currentSprite = this.sprites.next();
 	  this.currentSprite.position.set(this.game.world.centerX, this.game.world.centerY);
+
+	  //show animal text
+	  this.showText(this.currentSprite);
 
 	  //right arrow
 	  this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'rightArrow');
@@ -95,6 +98,8 @@ var GameState = {
 			return false
 		}
 		this.isMoving = true;
+		//hide text 
+		this.animalText.visible = false;
 		//function runs on arrow click
 		var newSprite, endX;
 		if(sprite.customParams.direction > 0) {
@@ -106,11 +111,12 @@ var GameState = {
 			newSprite.x = 640 + newSprite.width/2;
 			endX = -this.currentSprite.width/2;
 		}
-
+// tween animations, moves on x axis
 		var newSpriteMovement = this.game.add.tween(newSprite);
 		newSpriteMovement.to({x: this.game.world.centerX}, 1000);
 		newSpriteMovement.onComplete.add(function(){
 			this.isMoving = false;
+			this.showText(newSprite);
 		}, this);
 		newSpriteMovement.start();
 
@@ -126,6 +132,20 @@ var GameState = {
 		// console.log('animate sprite');
 		sprite.play('animate');
 		sprite.customParams.sound.play();
+	},
+	showText: function(animal){
+		if(!this.animalText) {
+			var style = {
+				font: 'bold 30px Roboto',
+				fill: '#0f0f0f',
+				align: 'center'
+			}
+			this.animalText = this.game.add.text(this.game.width/2, this.game.height * 0.5, '', style);
+			this.animalText.anchor.setTo(0.5);
+		}
+		this.animalText.setText(animal.customParams.text);
+		this.animalText.visible = true;
+		// console.log(this.animalText);	
 	}
 };
 
