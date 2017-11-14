@@ -13,7 +13,9 @@ var GameState = {
 	  //loads spritesheet instead of individual image
 	  this.load.spritesheet('cat','assets/images/cat1.png', 48, 48, 6);
 	  this.load.spritesheet('llama','assets/images/llama.png', 48, 48, 6);
-	  this.load.spritesheet('cat1','assets/images/cat1.png', 48, 48, 6);
+	  this.load.spritesheet('bird','assets/images/bird.png', 32, 32, 6);
+
+
 
 	},
 	//runs after assets load
@@ -32,7 +34,7 @@ var GameState = {
 	  var spriteData = [
 	  {key: 'llama', text:'LLAMA'},
 	  {key: 'cat', text: 'CAT'},
-	  {key: 'cat1', text: 'CAT1'}
+	  {key: 'bird', text: 'BIRD'}
 	  ];
 	  this.sprites = this.game.add.group();
 
@@ -43,11 +45,11 @@ var GameState = {
 	  spriteData.forEach(function(element){
 	  	//last parameter refers to frame in sprite animation
 	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key, 0);
-	  	animal.customParams= {text: element.key};
+	  	animal.customParams = {text: element.key};
 	  	//anchor point set to the center of sprite
-	  	animal.anchor.setTo(0.5);
-	  	animal.scale.setTo(1);
-	  	console.log(animal);
+	  	animal.anchor.setTo(0.5, 0.5);
+	  	animal.scale.setTo(1.5);
+	  	// console.log(animal.customParams);
 
 
 	  	//create animation
@@ -106,7 +108,7 @@ var GameState = {
 		newSpriteMovement.to({x: this.game.world.centerX}, 1000);
 		newSpriteMovement.onComplete.add(function(){
 			this.isMoving = false;
-		},this)
+		}, this);
 		newSpriteMovement.start();
 
 		var currentSpriteMovement = this.game.add.tween(this.currentSprite);
