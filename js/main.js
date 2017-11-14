@@ -16,6 +16,7 @@ var GameState = {
 	  this.load.spritesheet('Bird','assets/images/bird.png', 32, 32, 6);
 	  //loads audio files 
 	  this.load.audio('catSound', ['assets/audio/cat-meow.mp3', 'assets/audio/cat-meow.ogg']);
+	  this.load.audio('birdSound', ['assets/audio/bird-sound.mp3', 'assets/audio/bird-sound.ogg']);
 
 
 
@@ -36,7 +37,7 @@ var GameState = {
 	  var spriteData = [
 	  {key: 'Llama', text:'LLAMA', audio: 'catSound'},
 	  {key: 'Cat', text: 'CAT', audio: 'catSound'},
-	  {key: 'Bird', text: 'BIRD', audio: 'catSound'}
+	  {key: 'Bird', text: 'BIRD', audio: 'birdSound'}
 	  ];
 	  this.sprites = this.game.add.group();
 
