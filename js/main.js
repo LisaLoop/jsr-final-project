@@ -14,6 +14,8 @@ var GameState = {
 	  this.load.spritesheet('cat','assets/images/cat1.png', 48, 48, 6);
 	  this.load.spritesheet('llama','assets/images/llama.png', 48, 48, 6);
 	  this.load.spritesheet('bird','assets/images/bird.png', 32, 32, 6);
+	  //loads audio files 
+	  this.load.audio('catSound', ['assets/audio/cat-meow.mp3', 'assets/audio/cat-meow.ogg']);
 
 
 
@@ -32,9 +34,9 @@ var GameState = {
 
 	 //group for spritesheets 
 	  var spriteData = [
-	  {key: 'llama', text:'LLAMA'},
-	  {key: 'cat', text: 'CAT'},
-	  {key: 'bird', text: 'BIRD'}
+	  {key: 'llama', text:'LLAMA', audio: 'catSound'},
+	  {key: 'cat', text: 'CAT', audio: 'catSound'},
+	  {key: 'bird', text: 'BIRD', audio: 'catSound'}
 	  ];
 	  this.sprites = this.game.add.group();
 
@@ -45,7 +47,7 @@ var GameState = {
 	  spriteData.forEach(function(element){
 	  	//last parameter refers to frame in sprite animation
 	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key, 0);
-	  	animal.customParams = {text: element.key};
+	  	animal.customParams = {text: element.key, sound: self.game.add.audio(element.audio)};
 	  	//anchor point set to the center of sprite
 	  	animal.anchor.setTo(0.5, 0.5);
 	  	animal.scale.setTo(1.5);
@@ -122,6 +124,7 @@ var GameState = {
 	animateSprite: function(sprite, event) {
 		// console.log('animate sprite');
 		sprite.play('animate');
+		sprite.customParams.sound.play();
 	}
 };
 
