@@ -49,7 +49,7 @@ var GameState = {
 	  	animal = self.sprites.create(-1000, self.game.world.centerY, element.key, 0);
 	  	animal.customParams = {text: element.key, sound: self.game.add.audio(element.audio)};
 	  	//anchor point set to the center of sprite
-	  	animal.anchor.setTo(0.5, 0.5);
+	  	animal.anchor.setTo(0.5, -1.25);
 	  	animal.scale.setTo(1.5);
 	  	// console.log(animal.customParams);
 
@@ -61,9 +61,10 @@ var GameState = {
 	  	animal.events.onInputDown.add(self.animateSprite, self);
 	  	// console.log(animal);
 	  });
-
+	  // places first animal in the middle of screen
 	  this.currentSprite = this.sprites.next();
-	  this.currentSprite.position.set(this.game.world.centerX, 300);
+	  this.currentSprite.position.set(this.game.world.centerX, this.game.world.centerY);
+
 	  //right arrow
 	  this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'rightArrow');
 	  // this.rightArrow.scale.setTo(2);
